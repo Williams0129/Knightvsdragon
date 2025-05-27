@@ -1,5 +1,8 @@
 package com.binge;
 
 public class Main {
-    int x;
+    public static void main() {
+        int y=0;
+        y+=1;
+    }
 }
