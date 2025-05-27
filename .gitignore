@@ -1,0 +1,19 @@
+# IntelliJ 專用
+.idea/
+*.iml
+
+/out/
+/target/
+# 編譯產出目錄
+/build/
+
+# OS 系統檔案
+.DS_Store
+Thumbs.db
+
+# Java 一般忽略
+*.class
+*.log
+*.jar
+*.war
+*.ear
