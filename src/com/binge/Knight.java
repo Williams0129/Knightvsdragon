@@ -6,11 +6,13 @@ import javafx.scene.layout.Pane;
 
 public class Knight {
 
-    private int row; //縱軸
-    private int col; //橫軸
+    public int row; //縱軸
+    public int col; //橫軸
     private int size;//地圖大小
     private Pane[][] mypane;//將scene的格子複製下來
     private int[][] paneproperty;//紀錄格子的屬性
+
+    private Runnable onMovedCallback; // 新增：這是一個用來通知外部的「可執行程式塊」
 
     public Knight(int inirow, int inicol,int size, GridPane gridpane){//size是地圖大小(最大的row數)
         mypane = new Pane[size + 1][size + 1];
@@ -61,30 +63,34 @@ public class Knight {
         setcolor();
     }
 
+    public void setOnMovedCallback(Runnable callback) {
+        this.onMovedCallback = callback;
+    }
+
 
     public void detection(){//偵測四周能走的格子，若可以走就標示成4，size是地圖大小(最大的row數)
-        if (row + 1 <= size && col - 2 >= 0 && paneproperty[row + 1][col - 2] == 1){
+        if (row + 1 <= size && col - 2 >= 0 && (paneproperty[row + 1][col - 2] == 1 || paneproperty[row + 1][col - 2] == 3 )){
             paneproperty[row + 1][col - 2] = 4;//綠色，代表可以走
         }
-        if (row - 1 >= 0 && col - 2 >= 0 && paneproperty[row - 1][col - 2] == 1){
+        if (row - 1 >= 0 && col - 2 >= 0 && (paneproperty[row - 1][col - 2] == 1 || paneproperty[row - 1][col - 2] == 3)){
             paneproperty[row - 1][col - 2] = 4;//綠色，代表可以走
         }
-        if (row - 2 >= 0 && col - 1 >= 0 && paneproperty[row - 2][col - 1] == 1){
+        if (row - 2 >= 0 && col - 1 >= 0 && (paneproperty[row - 2][col - 1] == 1 ||paneproperty[row - 2][col - 1] == 3)){
             paneproperty[row - 2][col - 1] = 4;//綠色，代表可以走
         }
-        if (row - 2 >= 0 && col + 1 <= size && paneproperty[row - 2][col + 1] == 1){
+        if (row - 2 >= 0 && col + 1 <= size && (paneproperty[row - 2][col + 1] == 1 || paneproperty[row - 2][col + 1] == 3)){
             paneproperty[row - 2][col + 1] = 4;//綠色，代表可以走
         }
-        if (row - 1 >= 0 && col + 2 <= size && paneproperty[row - 1][col + 2] == 1){
+        if (row - 1 >= 0 && col + 2 <= size && (paneproperty[row - 1][col + 2] == 1 || paneproperty[row - 1][col + 2] == 3)){
             paneproperty[row - 1][col + 2] = 4;//綠色，代表可以走
         }
-        if (row + 1 <= size && col + 2 <= size && paneproperty[row + 1][col + 2] == 1){
+        if (row + 1 <= size && col + 2 <= size && (paneproperty[row + 1][col + 2] == 1 || paneproperty[row + 1][col + 2] == 3)){
             paneproperty[row + 1][col + 2] = 4;//綠色，代表可以走
         }
-        if (row + 2 <= size && col + 1 <= size && paneproperty[row + 2][col + 1] == 1){
+        if (row + 2 <= size && col + 1 <= size && (paneproperty[row + 2][col + 1] == 1 || paneproperty[row + 2][col + 1] == 3)){
             paneproperty[row + 2][col + 1] = 4;//綠色，代表可以走
         }
-        if (row + 2 <= size && col - 1 >= 0 && paneproperty[row + 2][col - 1] == 1){
+        if (row + 2 <= size && col - 1 >= 0 && (paneproperty[row + 2][col - 1] == 1 || paneproperty[row + 2][col - 1] == 3)){
             paneproperty[row + 2][col - 1] = 4;//綠色，代表可以走
         }
     }
@@ -111,5 +117,10 @@ public class Knight {
         paneproperty[nextrow][nextcol] = 2;
         row = nextrow;
         col = nextcol;
+
+        // 新增：通知 controller「我動了」
+        if (onMovedCallback != null) {
+            onMovedCallback.run(); // 執行 controller 給我的程式碼
+        }
     }
 }
