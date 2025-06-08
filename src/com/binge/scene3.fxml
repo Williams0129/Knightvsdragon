@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.binge.scene3Controller">
    <children>
-      <GridPane fx:id="gridpane3" layoutX="150.0" layoutY="150.0" prefHeight="700.0" prefWidth="700.0">
+      <GridPane fx:id="gridpane3" gridLinesVisible="true" layoutX="150.0" layoutY="150.0" prefHeight="700.0" prefWidth="700.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
