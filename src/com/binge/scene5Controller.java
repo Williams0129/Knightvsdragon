@@ -28,7 +28,7 @@ public class scene5Controller implements Initializable {
     }
 
     public void onKnightMoved() {
-        if (knight.row == 4 && knight.col == 10) {
+        if (knight.row == 0&& knight.col == 10) {
             switchToScene6(); // 到達目標位置就轉場
         }
     }
