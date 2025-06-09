@@ -7,21 +7,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
-
-
     @Override
-    public void start(Stage primaryStage) throws Exception {//啟動時，系統自動建立一個主要的Stage並傳入start中
-        Parent root = FXMLLoader.load(getClass().getResource("scene1.fxml")); // 載入 FXML 文件;getClass獲得本地class，getResource以本類別為根目錄尋照資料夾內的fxml的網址
-        primaryStage.setTitle("Knight vs dragon");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.sizeToScene(); // 設定視窗大小
-        primaryStage.show(); // 顯示視窗
+    public void start(Stage stage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
+            Scene scene = new Scene(root);
+            stage.setTitle("Knight VS. Dragon");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
-        launch(args); // 啟動應用程式
+        launch(args);
     }
-
-
 }
