@@ -20,25 +20,16 @@ public class MenuController {
     private Scene scene;
     private Parent root;
 
-    public void gameStart(ActionEvent event) throws IOException{
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("scene1.fxml"));
-        root = loader.load();
-
+    public void gameStart(javafx.event.ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("scene1.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
-    public void gameQuit(ActionEvent event) throws IOException{
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("scene1.fxml"));
-        root = loader.load();
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    public void gameQuit(javafx.event.ActionEvent event) throws IOException {
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
 
