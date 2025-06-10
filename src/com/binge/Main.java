@@ -21,7 +21,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.sizeToScene(); // 設定視窗大小
         primaryStage.show(); // 顯示視窗
-
     }
 
     public static void main(String[] args) {

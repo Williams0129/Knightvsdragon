@@ -107,7 +107,7 @@ public class Knight {
                     case 4 -> "green";
                     default -> "white";
                 };
-                if( color.equals("green") || color.equals("black") || color.equals("yellow") ){
+                if( color.equals("green") || color.equals("black") || color.equals("yellow") || color.equals("grey") ){
                     mypane[x][y].setOpacity(100);
                 }
                 else {
