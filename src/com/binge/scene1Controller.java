@@ -24,7 +24,7 @@ public class scene1Controller implements Initializable {
     Text timer;
 
     Knight knight;
-    time time = MenuController.time;
+    public static time time = MenuController.time;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
