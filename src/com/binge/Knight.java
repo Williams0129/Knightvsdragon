@@ -107,6 +107,12 @@ public class Knight {
                     case 4 -> "green";
                     default -> "white";
                 };
+                if( color.equals("green") || color.equals("black") || color.equals("yellow") ){
+                    mypane[x][y].setOpacity(100);
+                }
+                else {
+                    mypane[x][y].setOpacity(0);
+                }
                 mypane[x][y].setStyle("-fx-background-color: " + color + "; -fx-border-color: black;");
             }
         }

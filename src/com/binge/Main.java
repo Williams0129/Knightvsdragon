@@ -4,7 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class Main extends Application {
 
@@ -17,6 +21,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.sizeToScene(); // 設定視窗大小
         primaryStage.show(); // 顯示視窗
+
     }
 
     public static void main(String[] args) {
