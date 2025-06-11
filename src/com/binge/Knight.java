@@ -106,7 +106,11 @@ public class Knight {
                 };
 
                 mypane[x][y].setStyle("-fx-background-color: " + color + "; -fx-border-color: black;");
-                mypane[x][y].setOpacity(100);
+                if (color.equals("white")) {
+                    mypane[x][y].setOpacity(0.01); // 白色格子透明 (看得到背景)
+                } else {
+                    mypane[x][y].setOpacity(1.0); // 其他格子不透明 (完全蓋住背景)
+                }
 
                 // 只有當前格子為玩家 (黑色 / 2) 才放圖片
                 mypane[x][y].getChildren().clear(); // 先清掉 Pane 裡原本的內容

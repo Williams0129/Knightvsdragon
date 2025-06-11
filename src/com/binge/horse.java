@@ -111,7 +111,11 @@ public class horse {
                         default -> "white";
                     };
                     mypane[x][y].setStyle("-fx-background-color: " + color + "; -fx-border-color: black;");
-
+                    if (color.equals("white")) {
+                        mypane[x][y].setOpacity(0.01); // 白色格子透明 (看得到背景)
+                    } else {
+                        mypane[x][y].setOpacity(1.0); // 其他格子不透明 (完全蓋住背景)
+                    }
                     // 先清除 Pane 內部元件
                     mypane[x][y].getChildren().clear();
 
@@ -120,6 +124,7 @@ public class horse {
                         bindImageSize(mypane[x][y]);  // 動態綁定大小
                         mypane[x][y].getChildren().add(horseImageView);
                     }
+
                 }
             }
         }
