@@ -1,54 +1,64 @@
 package com.binge;
 
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public class Knight {
 
-    public int row; //縱軸
-    public int col; //橫軸
-    private int size;//地圖大小
-    private Pane[][] mypane;//將scene的格子複製下來
-    private int[][] paneproperty;//紀錄格子的屬性
+    public int row;
+    public int col;
+    private int size;
+    private Pane[][] mypane;
+    private int[][] paneproperty;
 
-    private Runnable onMovedCallback; // 新增：這是一個用來通知外部的「可執行程式塊」
+    private Runnable onMovedCallback;
 
-    public Knight(int inirow, int inicol,int size, GridPane gridpane){//size是地圖大小(最大的row數)
+    // 用來顯示圖片
+    private ImageView knightImageView;
+
+    public Knight(int inirow, int inicol, int size, GridPane gridpane) {
         mypane = new Pane[size + 1][size + 1];
         paneproperty = new int[size + 1][size + 1];
         row = inirow;
         col = inicol;
         this.size = size;
-        for (Node node : gridpane.getChildren()){//將scene的pane複製到mypane中，並記錄屬性到paneproperty中
-            if (node instanceof Pane){//判斷是不是Pane
-                Pane pane = (Pane) node;
+
+        // 建立角色圖示
+        Image knightImage = new Image(getClass().getResource("knight.png").toExternalForm()); // 請確認路徑正確
+        knightImageView = new ImageView(knightImage);
+        knightImageView.setFitWidth(75); // 可以根據格子大小微調
+        knightImageView.setFitHeight(75);
+        knightImageView.setPreserveRatio(true);
+
+        for (Node node : gridpane.getChildren()) {
+            if (node instanceof Pane pane) {
                 int thecol = GridPane.getColumnIndex(pane) == null ? 0 : GridPane.getColumnIndex(pane);
                 int therow = GridPane.getRowIndex(pane) == null ? 0 : GridPane.getRowIndex(pane);
                 mypane[therow][thecol] = pane;
 
-                String style = pane.getStyle();//得到類似"-fx-background-color: gray; -fx-border-color: black;"
-                if (style.contains("grey")){
-                    paneproperty[therow][thecol] = 0;//代表牆
+                String style = pane.getStyle();
+                if (style.contains("grey")) {
+                    paneproperty[therow][thecol] = 0;
+                } else if (style.contains("black")) {
+                    paneproperty[therow][thecol] = 2;
+                } else if (style.contains("yellow")) {
+                    paneproperty[therow][thecol] = 3;
+                } else {
+                    paneproperty[therow][thecol] = 1;
                 }
-                else if (style.contains("black")){
-                    paneproperty[therow][thecol] = 2;//代表起點、玩家
-                }
-                else if (style.contains("yellow")){
-                    paneproperty[therow][thecol] = 3;//代表終點
-                }
-                else{
-                    paneproperty[therow][thecol] = 1;//代表通路
-                }
+
                 pane.setOnMouseClicked(e -> {
                     int clickedRow = GridPane.getRowIndex(pane) == null ? 0 : GridPane.getRowIndex(pane);
                     int clickedCol = GridPane.getColumnIndex(pane) == null ? 0 : GridPane.getColumnIndex(pane);
 
-                    if (paneproperty[clickedRow][clickedCol] == 4) { // 如果是綠色格子
-                        setposition(row, col, clickedRow, clickedCol); // 移動
-                        for (int x = 0; x <= size; x++){
-                            for (int y = 0; y <=size; y++){
-                                if (paneproperty[x][y] == 4){
+                    if (paneproperty[clickedRow][clickedCol] == 4) {
+                        setposition(row, col, clickedRow, clickedCol);
+                        for (int x = 0; x <= size; x++) {
+                            for (int y = 0; y <= size; y++) {
+                                if (paneproperty[x][y] == 4) {
                                     paneproperty[x][y] = 1;
                                 }
                             }
@@ -61,45 +71,32 @@ public class Knight {
         }
         detection();
         setcolor();
+        updateImagePosition(); // 初始化時放上圖
     }
 
     public void setOnMovedCallback(Runnable callback) {
         this.onMovedCallback = callback;
     }
 
-
-    public void detection(){//偵測四周能走的格子，若可以走就標示成4，size是地圖大小(最大的row數)
-        if (row + 1 <= size && col - 2 >= 0 && (paneproperty[row + 1][col - 2] == 1 || paneproperty[row + 1][col - 2] == 3 )){
-            paneproperty[row + 1][col - 2] = 4;//綠色，代表可以走
-        }
-        if (row - 1 >= 0 && col - 2 >= 0 && (paneproperty[row - 1][col - 2] == 1 || paneproperty[row - 1][col - 2] == 3)){
-            paneproperty[row - 1][col - 2] = 4;//綠色，代表可以走
-        }
-        if (row - 2 >= 0 && col - 1 >= 0 && (paneproperty[row - 2][col - 1] == 1 ||paneproperty[row - 2][col - 1] == 3)){
-            paneproperty[row - 2][col - 1] = 4;//綠色，代表可以走
-        }
-        if (row - 2 >= 0 && col + 1 <= size && (paneproperty[row - 2][col + 1] == 1 || paneproperty[row - 2][col + 1] == 3)){
-            paneproperty[row - 2][col + 1] = 4;//綠色，代表可以走
-        }
-        if (row - 1 >= 0 && col + 2 <= size && (paneproperty[row - 1][col + 2] == 1 || paneproperty[row - 1][col + 2] == 3)){
-            paneproperty[row - 1][col + 2] = 4;//綠色，代表可以走
-        }
-        if (row + 1 <= size && col + 2 <= size && (paneproperty[row + 1][col + 2] == 1 || paneproperty[row + 1][col + 2] == 3)){
-            paneproperty[row + 1][col + 2] = 4;//綠色，代表可以走
-        }
-        if (row + 2 <= size && col + 1 <= size && (paneproperty[row + 2][col + 1] == 1 || paneproperty[row + 2][col + 1] == 3)){
-            paneproperty[row + 2][col + 1] = 4;//綠色，代表可以走
-        }
-        if (row + 2 <= size && col - 1 >= 0 && (paneproperty[row + 2][col - 1] == 1 || paneproperty[row + 2][col - 1] == 3)){
-            paneproperty[row + 2][col - 1] = 4;//綠色，代表可以走
+    public void detection() {
+        int[][] move = {
+                {+1, -2}, {-1, -2}, {-2, -1}, {-2, +1},
+                {-1, +2}, {+1, +2}, {+2, +1}, {+2, -1}
+        };
+        for (int[] m : move) {
+            int r = row + m[0], c = col + m[1];
+            if (r >= 0 && r <= size && c >= 0 && c <= size &&
+                    (paneproperty[r][c] == 1 || paneproperty[r][c] == 3)) {
+                paneproperty[r][c] = 4;
+            }
         }
     }
 
-    public void setcolor(){//剛開始跟每次移動玩都要重製顏色
-        for (int x = 0; x <= size; x++){
-            for (int y = 0; y <= size; y++){
+    public void setcolor() {
+        for (int x = 0; x <= size; x++) {
+            for (int y = 0; y <= size; y++) {
                 int judge = paneproperty[x][y];
-                String color = switch(judge){
+                String color = switch (judge) {
                     case 0 -> "grey";
                     case 1 -> "white";
                     case 2 -> "black";
@@ -107,26 +104,64 @@ public class Knight {
                     case 4 -> "green";
                     default -> "white";
                 };
-                if( color.equals("green") || color.equals("black") || color.equals("yellow") || color.equals("grey") ){
-                    mypane[x][y].setOpacity(100);
-                }
-                else {
-                    mypane[x][y].setOpacity(0);
-                }
+
                 mypane[x][y].setStyle("-fx-background-color: " + color + "; -fx-border-color: black;");
+                mypane[x][y].setOpacity(100);
+
+                // 只有當前格子為玩家 (黑色 / 2) 才放圖片
+                mypane[x][y].getChildren().clear(); // 先清掉 Pane 裡原本的內容
+                if (judge == 2) {
+                    // 取得 Pane 寬高
+                    double paneWidth = mypane[x][y].getWidth();
+                    double paneHeight = mypane[x][y].getHeight();
+
+                    // 若寬高還未初始化（第一次載入），綁定它們
+                    int finalX = x;
+                    int finalY = y;
+                    mypane[x][y].widthProperty().addListener((obs, oldVal, newVal) -> {
+                        updateKnightImageSize(mypane[finalX][finalY]);
+                    });
+                    int finalX1 = x;
+                    int finalY1 = y;
+                    mypane[x][y].heightProperty().addListener((obs, oldVal, newVal) -> {
+                        updateKnightImageSize(mypane[finalX1][finalY1]);
+                    });
+
+                    // 設定 knightImageView 大小
+                    updateKnightImageSize(mypane[x][y]);
+
+                    mypane[x][y].getChildren().add(knightImageView);
+                }
             }
         }
     }
 
-    public void setposition(int prerow, int precol, int nextrow, int nextcol){//移動完後要重新設定位置
+    private void updateKnightImageSize(Pane pane) {
+        knightImageView.setFitWidth(pane.getWidth());
+        knightImageView.setFitHeight(pane.getHeight());
+    }
+
+    public void setposition(int prerow, int precol, int nextrow, int nextcol) {
         paneproperty[prerow][precol] = 1;
         paneproperty[nextrow][nextcol] = 2;
         row = nextrow;
         col = nextcol;
 
-        // 新增：通知 controller「我動了」
+        updateImagePosition(); // 每次移動更新圖片
+
         if (onMovedCallback != null) {
-            onMovedCallback.run(); // 執行 controller 給我的程式碼
+            onMovedCallback.run();
         }
+    }
+
+    private void updateImagePosition() {
+        // 移除舊位置的圖
+        for (int i = 0; i <= size; i++) {
+            for (int j = 0; j <= size; j++) {
+                mypane[i][j].getChildren().remove(knightImageView);
+            }
+        }
+        // 放到目前位置的 Pane 中
+        mypane[row][col].getChildren().add(knightImageView);
     }
 }
