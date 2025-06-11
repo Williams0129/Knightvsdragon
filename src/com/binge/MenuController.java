@@ -43,7 +43,6 @@ public class MenuController implements Initializable {
                     )
             );
             timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.play();
         }
     }
 
@@ -54,6 +53,7 @@ public class MenuController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        timeline.play();
     }
 
     public void gameQuit(javafx.event.ActionEvent event) {
