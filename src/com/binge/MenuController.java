@@ -27,22 +27,25 @@ public class MenuController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    public static time time = new time("00:00:00");  // 創建時間
-
-    Timeline timeline = new Timeline(
-            new KeyFrame(Duration.seconds(1),
-                    e -> {
-                        time.oneSecondPassed();
-                        timer.setText(time.getCurrentTime());
-                    }
-
-    ));
+    public static time time = new time("00:00:00");
+    public static Timeline timeline; // 改為 static
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         timer.setText(time.getCurrentTime());
-    }
 
+        if (timeline == null) { // 確保只建立一次
+            timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1),
+                            e -> {
+                                time.oneSecondPassed();
+                            }
+                    )
+            );
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+        }
+    }
 
     public void gameStart(javafx.event.ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scene1.fxml"));
@@ -52,9 +55,9 @@ public class MenuController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    public void gameQuit(javafx.event.ActionEvent event) throws IOException {
+
+    public void gameQuit(javafx.event.ActionEvent event) {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.close();
     }
-
 }

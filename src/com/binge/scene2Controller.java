@@ -23,24 +23,27 @@ public class scene2Controller implements Initializable {
     @FXML
     Text timer;
     Knight knight;
-    time time = scene1Controller.time;
-
+    public static time time = scene1Controller.time;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 確保 gridpane 已經載入完成
         knight = new Knight(10, 0, 10, gridpane2);
+        knight.setOnMovedCallback(() -> onKnightMoved());
 
-        knight.setOnMovedCallback(() -> onKnightMoved()); // 新增：當騎士移動時要做的事
+        timer.setText(time.getCurrentTime());
 
-        timer.setText(time.getCurrentTime()); // 取得時間並開始
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        Timeline updateDisplay = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    timer.setText(time.getCurrentTime());
+                })
+        );
+        updateDisplay.setCycleCount(Timeline.INDEFINITE);
+        updateDisplay.play();
     }
 
     public void onKnightMoved() {
         if (knight.row == 0 && knight.col == 10) {
-            switchToScene3(); // 到達目標位置就轉場
+            switchToScene3();
         }
     }
 
@@ -54,11 +57,4 @@ public class scene2Controller implements Initializable {
             e.printStackTrace();
         }
     }
-    Timeline timeline = new Timeline(
-            new KeyFrame(Duration.seconds(1),
-                    e -> {
-                        time.oneSecondPassed();
-                        timer.setText(time.getCurrentTime());
-                    }
-            ));
 }
