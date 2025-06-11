@@ -21,7 +21,7 @@
       </ImageView>
       <Button fx:id="gameStartButton" layoutX="669.0" layoutY="633.0" mnemonicParsing="false" onAction="#gameStart" opacity="0.0" prefHeight="68.0" prefWidth="301.0" text="gameStart" />
       <Button fx:id="gameQuitButton" layoutX="732.0" layoutY="792.0" mnemonicParsing="false" onAction="#gameQuit" opacity="0.0" prefHeight="68.0" prefWidth="153.0" text="gameQuit" />
-      <Text fx:id="timer" layoutX="770.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="131.724609375">
+      <Text fx:id="timer" layoutX="770.0" layoutY="60.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="131.724609375">
          <font>
             <Font size="45.0" />
          </font>
