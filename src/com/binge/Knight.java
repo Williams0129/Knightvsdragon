@@ -96,45 +96,37 @@ public class Knight {
         for (int x = 0; x <= size; x++) {
             for (int y = 0; y <= size; y++) {
                 int judge = paneproperty[x][y];
-                String color = switch (judge) {
-                    case 0 -> "grey";
-                    case 1 -> "white";
-                    case 2 -> "black";
-                    case 3 -> "yellow";
-                    case 4 -> "green";
-                    default -> "white";
+
+                // 根據屬性決定背景色（透明度在這裡調整）
+                String backgroundStyle = switch (judge) {
+                    case 0 -> "-fx-background-color: rgba(128,128,128,0.2);"; // grey 半透明
+                    case 1 -> "-fx-background-color: rgba(255,255,255,0.01);"; // white 幾乎全透明
+                    case 2 -> "-fx-background-color: rgba(0,0,0,0.01);";       // black 幾乎全透明，但不會影響圖
+                    case 3 -> "-fx-background-color: yellow;";
+                    case 4 -> "-fx-background-color: green;";
+                    default -> "-fx-background-color: white;";
                 };
 
-                mypane[x][y].setStyle("-fx-background-color: " + color + "; -fx-border-color: black;");
-                if (color.equals("white")) {
-                    mypane[x][y].setOpacity(0.01); // 白色格子透明 (看得到背景)
-                } else {
-                    mypane[x][y].setOpacity(1.0); // 其他格子不透明 (完全蓋住背景)
-                }
+                mypane[x][y].setStyle(backgroundStyle + " -fx-border-color: black;");
 
-                // 只有當前格子為玩家 (黑色 / 2) 才放圖片
-                mypane[x][y].getChildren().clear(); // 先清掉 Pane 裡原本的內容
+                // 清除原有內容（避免重複）
+                mypane[x][y].getChildren().clear();
+
+                // 如果這是玩家（黑色 / 2）的位置，就放圖片
                 if (judge == 2) {
-                    // 取得 Pane 寬高
-                    double paneWidth = mypane[x][y].getWidth();
-                    double paneHeight = mypane[x][y].getHeight();
+                    // 設定圖片尺寸並加入
+                    updateKnightImageSize(mypane[x][y]);
+                    mypane[x][y].getChildren().add(knightImageView);
 
-                    // 若寬高還未初始化（第一次載入），綁定它們
+                    // 綁定 Pane 大小（確保縮放時圖片跟著變）
                     int finalX = x;
                     int finalY = y;
                     mypane[x][y].widthProperty().addListener((obs, oldVal, newVal) -> {
                         updateKnightImageSize(mypane[finalX][finalY]);
                     });
-                    int finalX1 = x;
-                    int finalY1 = y;
                     mypane[x][y].heightProperty().addListener((obs, oldVal, newVal) -> {
-                        updateKnightImageSize(mypane[finalX1][finalY1]);
+                        updateKnightImageSize(mypane[finalX][finalY]);
                     });
-
-                    // 設定 knightImageView 大小
-                    updateKnightImageSize(mypane[x][y]);
-
-                    mypane[x][y].getChildren().add(knightImageView);
                 }
             }
         }

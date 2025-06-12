@@ -47,7 +47,8 @@ public class MenuController implements Initializable {
     }
 
     public void gameStart(javafx.event.ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Chooselevel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scene1" +
+                ".fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

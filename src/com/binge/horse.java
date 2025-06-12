@@ -100,37 +100,44 @@ public class horse {
     public void setColor() {
         for (int x = 0; x <= size; x++) {
             for (int y = 0; y <= size; y++) {
-                if (mypane[x][y] != null) {
-                    int judge = paneproperty[x][y];
-                    String color = switch (judge) {
-                        case 0 -> "grey";
-                        case 1 -> "white";
-                        case 2 -> "black";
-                        case 3 -> "yellow";
-                        case 4 -> "green";
-                        default -> "white";
-                    };
-                    mypane[x][y].setStyle("-fx-background-color: " + color + "; -fx-border-color: black;");
-                    if (color.equals("white")) {
-                        mypane[x][y].setOpacity(0.01); // 白色格子透明 (看得到背景)
-                    } else {
-                        mypane[x][y].setOpacity(1.0); // 其他格子不透明 (完全蓋住背景)
-                    }
-                    // 先清除 Pane 內部元件
-                    mypane[x][y].getChildren().clear();
+                int judge = paneproperty[x][y];
 
-                    if (judge == 2) {
-                        // 新增圖片到 Pane 中
-                        bindImageSize(mypane[x][y]);  // 動態綁定大小
-                        mypane[x][y].getChildren().add(horseImageView);
-                    }
+                // 根據屬性決定背景色（透明度在這裡調整）
+                String backgroundStyle = switch (judge) {
+                    case 0 -> "-fx-background-color: rgba(128,128,128,0.2);"; // grey 半透明
+                    case 1 -> "-fx-background-color: rgba(255,255,255,0.01);"; // white 幾乎全透明
+                    case 2 -> "-fx-background-color: rgba(0,0,0,0.01);";       // black 幾乎全透明，但不會影響圖
+                    case 3 -> "-fx-background-color: yellow;";
+                    case 4 -> "-fx-background-color: green;";
+                    default -> "-fx-background-color: white;";
+                };
 
+                mypane[x][y].setStyle(backgroundStyle + " -fx-border-color: black;");
+
+                // 清除原有內容（避免重複）
+                mypane[x][y].getChildren().clear();
+
+                // 如果這是玩家（黑色 / 2）的位置，就放圖片
+                if (judge == 2) {
+                    // 設定圖片尺寸並加入
+                    updateKnightImageSize(mypane[x][y]);
+                    mypane[x][y].getChildren().add( horseImageView);
+
+                    // 綁定 Pane 大小（確保縮放時圖片跟著變）
+                    int finalX = x;
+                    int finalY = y;
+                    mypane[x][y].widthProperty().addListener((obs, oldVal, newVal) -> {
+                        updateKnightImageSize(mypane[finalX][finalY]);
+                    });
+                    mypane[x][y].heightProperty().addListener((obs, oldVal, newVal) -> {
+                        updateKnightImageSize(mypane[finalX][finalY]);
+                    });
                 }
             }
         }
     }
 
-    private void bindImageSize(Pane pane) {
+    private void updateKnightImageSize(Pane pane) {
         // 綁定圖片寬高到 pane 大小
         horseImageView.fitWidthProperty().bind(pane.widthProperty());
         horseImageView.fitHeightProperty().bind(pane.heightProperty());
