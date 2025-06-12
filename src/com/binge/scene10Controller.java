@@ -32,7 +32,7 @@ public class scene10Controller implements Initializable {
         // 確保 gridpane 已經載入完成
         horse = new horse(10, 0, 10, gridpane10);
 
-        horse.setOnMovedCallback(() -> onKnightMoved()); // 新增：當騎士移動時要做的事
+        horse.setOnMovedCallback(this::onKnightMoved); // 新增：當騎士移動時要做的事
         // 只更新畫面，不再呼叫 oneSecondPassed()
         timer.setText(time.getCurrentTime());
 
@@ -53,7 +53,7 @@ public class scene10Controller implements Initializable {
 
     public void switchToScene11() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("Chooselevel.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("finishscreen.fxml"));
             Stage stage = (Stage) gridpane10.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
