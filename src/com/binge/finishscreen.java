@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 public class finishscreen implements Initializable {
     @FXML
     Button chooselevel, exit;
+    @FXML
     AnchorPane panee;
     public void initialize(URL location, ResourceBundle resources) {
 

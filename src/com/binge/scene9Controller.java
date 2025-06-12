@@ -53,7 +53,7 @@ public class scene9Controller implements Initializable {
 
     public void switchToScene10() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("scene10.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("finishscreen.fxml"));
             Stage stage = (Stage) gridpane9.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
