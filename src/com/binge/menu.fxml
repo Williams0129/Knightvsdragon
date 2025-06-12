@@ -27,7 +27,7 @@
             <Font size="45.0" />
          </font>
       </Text>
-      <Label layoutX="220.0" layoutY="120.0" prefHeight="78.0" prefWidth="554.0" text="KNIGHT  vs  DRAGON">
+      <Label layoutX="128.0" layoutY="123.0" prefHeight="78.0" prefWidth="554.0" text="KNIGHT  vs  DRAGON">
          <font>
             <Font name="Berlin Sans FB Demi Bold" size="56.0" />
          </font>

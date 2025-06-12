@@ -19,6 +19,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.sizeToScene(); // 設定視窗大小
         primaryStage.show(); // 顯示視窗
+        primaryStage.setResizable(false);
         // 播放背景音樂，只會播放一次
         String musicPath = "src/com/binge/medievalSong.wav"; // 請根據你的實際路徑調整
         BGMPlayer.play(musicPath);

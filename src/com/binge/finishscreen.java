@@ -25,8 +25,21 @@ public class finishscreen implements Initializable {
     Button chooselevel, exit;
     @FXML
     AnchorPane panee;
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    Text timer;
 
+    public static time time = scene10Controller.time;
+
+    public void initialize(URL location, ResourceBundle resources) {
+        timer.setText(time.getCurrentTime());
+
+        Timeline updateDisplay = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    timer.setText(time.getCurrentTime());
+                })
+        );
+        updateDisplay.setCycleCount(Timeline.INDEFINITE);
+        updateDisplay.stop();
     }
 
     public void Chooselevel(javafx.event.ActionEvent event) throws IOException {
