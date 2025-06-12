@@ -179,5 +179,15 @@
             <Font size="45.0" />
          </font>
       </Text>
+      <ImageView fitHeight="154.0" fitWidth="333.0" layoutX="360.0" layoutY="839.0" pickOnBounds="true" preserveRatio="true" scaleX="1.3">
+         <image>
+            <Image url="@tip.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="422.0" layoutY="929.0" strokeType="OUTSIDE" strokeWidth="0.0" text="西洋棋-城堡" textAlignment="CENTER" wrappingWidth="203.724609375">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
