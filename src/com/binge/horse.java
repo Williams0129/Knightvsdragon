@@ -104,7 +104,7 @@ public class horse {
 
                 // 根據屬性決定背景色（透明度在這裡調整）
                 String backgroundStyle = switch (judge) {
-                    case 0 -> "-fx-background-color: rgba(128,128,128,0.2);"; // grey 半透明
+                    case 0 -> "-fx-background-color: rgba(128,128,128,0.8);"; // grey 半透明
                     case 1 -> "-fx-background-color: rgba(255,255,255,0.01);"; // white 幾乎全透明
                     case 2 -> "-fx-background-color: rgba(0,0,0,0.01);";       // black 幾乎全透明，但不會影響圖
                     case 3 -> "-fx-background-color: yellow;";
